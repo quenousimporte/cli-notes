@@ -71,9 +71,10 @@ function home()
 	usage();
 }
 
-function decrypt(originalFileName)
+function decrypt(originalFileName, outputFileName)
 {
-	execCommand("gpg", ["-r", settings.gpg_recipient, "-o", tempFileName,"-d", originalFileName]);
+	outputFileName = outputFileName || tempFileName;
+	execCommand("gpg", ["-r", settings.gpg_recipient, "-o", outputFileName,"-d", originalFileName]);
 }
 
 var commands = 
@@ -179,7 +180,13 @@ var commands =
 		usage: "notes export <dest>",
 		exec: function(dest)
 		{
-			console.log('todo');
+			var files = getFiles();
+			for (var index in files)
+			{
+				var originalFileName = path.join(settings.local_folder, files[index]);
+				var outputFileName = path.join(dest, files[index].replace(settings.encrypted_extension, settings.default_temp_extension));
+				decrypt(originalFileName, outputFileName);
+			}
 		}
 	}
 }
@@ -208,6 +215,3 @@ if (fs.existsSync(tempFileName))
 {
 	fs.unlinkSync(tempFileName);
 }
-
-	
-
