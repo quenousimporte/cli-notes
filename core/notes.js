@@ -5,7 +5,7 @@ const path = require('path');
 function importFile(file)
 {
 	var newFileName = path.join(settings.local_folder, path.basename(file).replace(settings.default_temp_extension, settings.encrypted_extension));
-	execCommand("gpg", ["-a", "-r", settings.gpg_recipient, "-o", newFileName, "-e", file]);
+	encrypt(newFileName, file);
 }
 
 function translate(key)
@@ -44,9 +44,10 @@ function editFile(originalFileName)
 	encrypt(originalFileName);
 }
 
-function encrypt(originalFileName)
+function encrypt(originalFileName, outputFileName)
 {
-	execCommand("gpg", ["-a", "-r", settings.gpg_recipient, "-o", originalFileName, "-e", tempFileName]);
+	outputFileName = outputFileName || tempFileName;
+	execCommand("gpg", ["-a", "-r", settings.gpg_recipient, "-o", originalFileName, "-e", outputFileName]);
 }
 
 function execCommand(command, args)
