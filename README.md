@@ -30,4 +30,4 @@ Your notes are stored in flat .asc files, in the local folder set in the setting
 
 You can edit a note using `notes ed <index>`, delete it with `notes rm <index>`, etc.
 
-Enjoy 😃
+That's it! 😃
