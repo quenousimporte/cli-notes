@@ -1,7 +1,7 @@
 {
-	"local_folder": "~/notes",
+	"local_folder": "/home/me/notes",
 	"sync_command": "unison",
-	"sync_command_options": ["~/notes", "/mnt/some/remote/folder"],
+	"sync_command_options": ["/home/me/notes", "/mnt/some/remote/folder"],
 	"editor": "vim",
 	"gpg_recipient": "me@domain.net",
 	"default_temp_extension": ".md",
