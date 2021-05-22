@@ -9,7 +9,7 @@ This is yet another note-taking app, heavily inspired by [nb](https://xwmx.githu
 * Your notes can be synchronized with any external tool (WebDAV sync, git...)
 * The dependencies are node.js (with no additional package), and OpenGPG
 
-⚠ While you edit your note, it is written unencrypted in a temporary file on your hard drive. I am no security expert. Please do not use this app if your life is at stake!
+⚠ While you edit your note, it is written unencrypted in a temporary file on your hard drive. I am no security expert. Please do not use this app if your life, your reputation, or whatever you value is at stake!
 
 ## Installation and setup
 
