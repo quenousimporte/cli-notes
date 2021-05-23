@@ -80,6 +80,14 @@ function decrypt(originalFileName, outputFileName)
 
 var commands = 
 {
+  mer:
+  {
+    exec: function()
+    {
+      console.log("il et fou!");
+    }
+  },
+
 	ed: 
 	{
 		usage: "notes ed <index>",
