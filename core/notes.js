@@ -5,7 +5,7 @@ const path = require('path');
 function loadSettings()
 {
   var data = fs.readFileSync('../core/settings.json', 'utf8');
-  var settings = JSON.parse(data);
+  return JSON.parse(data);
 }
 
 function importFile(file)
@@ -147,7 +147,7 @@ var commands =
 		exec: function()
 		{
 			editFile('../core/settings.json');
-      loadSettings();
+      settings = loadSettings();
 		}
 	},
 
@@ -212,7 +212,7 @@ var commands =
 	}
 }
 
-loadSettings();
+var settings = loadSettings();
 
 data = fs.readFileSync('../core/lg.json', 'utf8');
 var lg = JSON.parse(data);
