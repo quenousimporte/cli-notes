@@ -2,6 +2,12 @@ const fs = require('fs');
 const child_process = require("child_process");
 const path = require('path');
 
+function loadSettings()
+{
+  var data = fs.readFileSync('../core/settings.json', 'utf8');
+  var settings = JSON.parse(data);
+}
+
 function importFile(file)
 {
 	var newFileName = path.join(settings.local_folder, path.basename(file).replace(settings.default_temp_extension, settings.encrypted_extension));
@@ -141,7 +147,7 @@ var commands =
 		exec: function()
 		{
 			editFile('../core/settings.json');
-			// todo: reload settings?
+      loadSettings();
 		}
 	},
 
@@ -206,8 +212,7 @@ var commands =
 	}
 }
 
-var data = fs.readFileSync('../core/settings.json', 'utf8');
-var settings = JSON.parse(data);
+loadSettings();
 
 data = fs.readFileSync('../core/lg.json', 'utf8');
 var lg = JSON.parse(data);
