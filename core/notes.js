@@ -188,6 +188,21 @@ var commands =
 				decrypt(originalFileName, outputFileName);
 			}
 		}
+	},
+	
+	view:
+	{
+		usage: "notes view <index>",
+		exec: function(index)
+		{
+			var htmlFileName = tempFileName + '.html';
+			var files = getFiles();
+			var originalFileName = path.join(settings.local_folder, files[index]);
+			decrypt(originalFileName);
+			execCommand('pandoc', ['-o', htmlFileName, tempFileName]);
+			execCommand('C:\\Program Files\\Mozilla Firefox\\firefox.exe', [htmlFileName]);
+			//fs.unlinkSync(htmlFileName);
+		}
 	}
 }
 
