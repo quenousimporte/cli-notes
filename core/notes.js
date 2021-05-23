@@ -38,16 +38,15 @@ function usage()
 	console.log(usages.join(" | "));
 }
 
-function editFile(originalFileName)
+function editFile(fileName)
 {
-	execCommand(settings.editor, [tempFileName]);
-	encrypt(originalFileName);
+	execCommand(settings.editor, [fileName || tempFileName]);
 }
 
-function encrypt(originalFileName, outputFileName)
+function encrypt(outputFileName, inputFileName)
 {
-	outputFileName = outputFileName || tempFileName;
-	execCommand("gpg", ["-a", "-r", settings.gpg_recipient, "-o", originalFileName, "-e", outputFileName]);
+	inputFileName = inputFileName || tempFileName;
+	execCommand("gpg", ["-a", "-r", settings.gpg_recipient, "-o", outputFileName, "-e", inputFileName]);
 }
 
 function execCommand(command, args)
@@ -62,7 +61,6 @@ function home()
 {
 	console.log("---");
 	console.log(translate("welcome"));
-	console.log("---");
 	var files = getFiles();
 	for (var i = 0; i < files.length; i++)
 	{
@@ -97,7 +95,8 @@ var commands =
 			var originalFileName = path.join(settings.local_folder, files[index]);
 
 			decrypt(originalFileName);
-			editFile(originalFileName);
+			editFile();
+			encrypt(originalFileName);
 		}
 	},
 	
@@ -122,7 +121,8 @@ var commands =
 		usage: "notes add <title>",
 		exec: function(arg)
 		{
-			editFile(path.join(settings.local_folder, arg + ".asc"));
+			editFile();
+			encrypt(path.join(settings.local_folder, arg + ".asc"));
 		}
 	},
 
@@ -135,22 +135,13 @@ var commands =
 		}
 	},
 
-	set:
+	settings:
 	{
-		usage: "notes set [setting]",
-		exec: function(setting)
+		usage: "notes settings",
+		exec: function()
 		{
-			if (!setting)
-			{
-				for (i in settings)
-				{
-					console.log(i + "=" + settings[i]);
-				}
-			}
-			else
-			{
-				console.log(setting + "=" + settings[setting]);
-			}
+			editFile('../core/settings.json');
+			// todo: reload settings?
 		}
 	},
 
@@ -206,7 +197,7 @@ var settings = JSON.parse(data);
 data = fs.readFileSync('../core/lg.json', 'utf8');
 var lg = JSON.parse(data);
 
-var tempFileName = path.join(settings.local_folder, '.note' + settings.default_temp_extension);
+var tempFileName = '.note' + settings.default_temp_extension;
 var command = process.argv[2];
 
 if (commands[command])
