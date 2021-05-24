@@ -13,6 +13,20 @@ function startCommand()
 	}
 }
 
+function listNotes()
+{
+	var files = getFiles();
+	for (var i = 0; i < files.length; i++)
+	{
+		var file = files[i];
+		if (filter && file.toLowerCase().indexOf(filter.toLowerCase()) === -1)
+		{
+			continue;
+		}
+		console.log("[" + i + "] " + files[i].replace(settings.encrypted_extension, ""));
+	}	
+}
+
 function getFileName(index)
 {
 	var files = getFiles();
@@ -93,11 +107,7 @@ function home()
 {
 	console.log("---");
 	console.log(translate("welcome"));
-	var files = getFiles();
-	for (var i = 0; i < files.length; i++)
-	{
-		console.log("[" + i + "] " + files[i].replace(settings.encrypted_extension, ""));
-	}
+	listNotes();
 	console.log("---");
 	usage();
 }
@@ -115,6 +125,15 @@ var commands =
 		exec: function()
 		{
 			console.log("il et fou!");
+		}
+	},
+	
+	filter:
+	{
+		usage: "notes filter <word>",
+		exec: function(word)
+		{
+			filter = word;
 		}
 	},
 
@@ -243,6 +262,7 @@ var commands =
 var settings = loadSettings();
 var lg = loadLg();
 var tempFileName = '.note' + settings.default_temp_extension;
+var filter = "";
 
 var command = process.argv[2];
 if (commands[command])
