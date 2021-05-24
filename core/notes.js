@@ -51,8 +51,8 @@ function loadLg()
 
 function importFile(file)
 {
-	var newFileName = path.join(settings.local_folder, path.basename(file).replace(settings.default_temp_extension, settings.encrypted_extension));
-	encrypt(file, newFileName);
+	var newFile = path.join(settings.local_folder, path.basename(file).replace(settings.default_temp_extension, settings.encrypted_extension));
+	encrypt(file, newFile);
 }
 
 function translate(key)
@@ -67,7 +67,6 @@ function getFiles()
 	{ 
         return value.indexOf(settings.encrypted_extension) != -1;
     });
-
 	return files;
 }
 
@@ -198,8 +197,7 @@ var commands =
 		usage: "notes rm <index>",
 		exec: function(index)
 		{
-			var files = getFiles();
-			fs.unlinkSync(path.join(settings.local_folder, files[index]));
+			fs.unlinkSync(getFileName(index));
 		}
 	},
 
@@ -246,7 +244,7 @@ var commands =
 			var htmlFileName = tempFileName + '.html';
 			var fileName = getFileName(index);
 			decrypt(fileName, tempFileName);
-			execCommand('pandoc', ['-o', htmlFileName, tempFileName]);
+			execCommand('pandoc', [tempFileName, '-o', htmlFileName]);
 			
 			child_process.exec(startCommand() + ' ' + htmlFileName);
 			
