@@ -2,6 +2,17 @@ const fs = require('fs');
 const child_process = require("child_process");
 const path = require('path');
 
+function startCommand()
+{
+	switch (process.platform)
+	{ 
+		case 'darwin' : return 'open';
+		case 'win32' : return 'start';
+		case 'win64' : return 'start';
+		default : return 'xdg-open';
+	}
+}
+
 function getFileName(index)
 {
 	var files = getFiles();
@@ -72,7 +83,7 @@ function encrypt(input, output)
 
 function execCommand(command, args)
 {
-	var child = child_process.spawnSync(command, args,
+	child_process.spawnSync(command, args,
 	{
     	stdio: 'inherit'
 	});
@@ -217,8 +228,14 @@ var commands =
 			var fileName = getFileName(index);
 			decrypt(fileName, tempFileName);
 			execCommand('pandoc', ['-o', htmlFileName, tempFileName]);
-			execCommand('C:\\Program Files\\Mozilla Firefox\\firefox.exe', [htmlFileName]);
-			//fs.unlinkSync(htmlFileName);
+			
+			child_process.exec(startCommand() + ' ' + htmlFileName);
+			
+			// to improve!
+			setTimeout(function()
+			{
+				fs.unlinkSync(htmlFileName);
+			}, 5000);
 		}
 	}
 }
