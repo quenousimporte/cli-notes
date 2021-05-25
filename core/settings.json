@@ -3,7 +3,7 @@
 	"sync_command": "unison",
 	"sync_command_options": ["/home/me/notes", "/mnt/some/remote/folder"],
 	"editor": "vim",
-	"gpg_recipient": "me@domain.net",
+	"gpg_options": ["-r", "me@domain.net", "--yes", "-a"],
 	"default_temp_extension": ".md",
 	"encrypted_extension": ".asc",
 	"language": "en"
