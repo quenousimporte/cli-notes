@@ -23,7 +23,7 @@ function listNotes()
 		{
 			continue;
 		}
-		console.log("[" + i + "] " + files[i].replace(settings.encrypted_extension, ""));
+		console.log(i + " " + files[i].replace(settings.encrypted_extension, ""));
 	}	
 }
 
@@ -104,10 +104,7 @@ function execCommand(command, args)
 
 function home()
 {
-	console.log("---");
-	console.log(translate("welcome"));
 	listNotes();
-	console.log("---");
 	usage();
 }
 
