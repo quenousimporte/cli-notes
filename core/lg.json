@@ -2,12 +2,14 @@
 	"welcome":
 	{
 		"fr": "notes :",
-		"en": "notes:"
+		"en": "notes:",
+		"no": "notater:"
 	},
 	"unknown command":
 	{
 		"fr": ": commande inconnue",
-		"en": ": unknwon command"
+		"en": ": unknwon command",
+		"no": ": ukjent kommando"	
 	}
 	
 }
