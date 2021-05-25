@@ -91,7 +91,7 @@ function editFile(fileName)
 
 function encrypt(input, output)
 {
-	execCommand("gpg", ["-q", "--yes", "-a", "-r", settings.gpg_recipient, "-o", output, "-e", input]);
+	execCommand("gpg", settings.gpg_options.concat(["-o", output, "-e", input]));
 }
 
 function execCommand(command, args)
@@ -114,7 +114,7 @@ function home()
 function decrypt(input, output)
 {
 	output = output || tempFileName;
-	execCommand("gpg", ["-q", "--yes", "-r", settings.gpg_recipient, "-o", output,"-d", input]);
+	execCommand("gpg", settings.gpg_options.concat(["-o", output,"-d", input]));
 }
 
 var commands = 
