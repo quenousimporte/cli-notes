@@ -62,12 +62,10 @@ function translate(key)
 
 function getFiles()
 {
-	var files = fs.readdirSync(settings.local_folder);
-	files = files.filter(function(value, index, arr)
+	return fs.readdirSync(settings.local_folder).filter(function(value, index, arr)
 	{ 
         return value.indexOf(settings.encrypted_extension) != -1;
     });
-	return files;
 }
 
 function usage()
