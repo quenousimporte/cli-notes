@@ -276,9 +276,13 @@ var lg = loadLg();
 var tempFileName = '.note' + settings.default_temp_extension;
 var filter = "";
 
-if (settings.auto_sync) commands.sync.exec();
-
 var command = process.argv[2];
+
+if (command !== 'sync' && settings.auto_sync)
+{
+	commands.sync.exec();
+}
+
 if (commands[command])
 {
 	commands[command].exec(process.argv[3]);
@@ -293,5 +297,8 @@ home();
 if (fs.existsSync(tempFileName))
 {
 	fs.unlinkSync(tempFileName);
-	if (settings.auto_sync) commands.sync.exec();
+	if (settings.auto_sync)
+	{
+		commands.sync.exec();
+	}
 }
