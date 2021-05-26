@@ -89,23 +89,13 @@ function translate(key)
 	return lg[key][settings.language];
 }
 
-function getFiles(folder)
+function getFiles()
 {
-	folder = folder || settings.local_folder;
-	var files = [];
-	var content = fs.readdirSync(folder, { withFileTypes: true });
-	content.forEach(file => 
+	return fs.readdirSync(settings.local_folder)
+	.filter(file => 
 	{
-		if (file.isFile() && path.extname(file.name) === settings.encrypted_extension)
-		{
-			files.push(path.join(folder, file.name).replace(settings.local_folder, ''));
-		}
-		if (file.isDirectory())
-		{
-			files = files.concat(getFiles(path.join(folder, file.name)));
-		}
+		return path.extname(file) === settings.encrypted_extension;
 	});
-	return files;
 }
 
 function usage()
