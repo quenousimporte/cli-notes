@@ -231,6 +231,11 @@ var commands =
 		}
 	},
 	
+	explore:
+	{
+	  child_process.exec(startCommand() + ' ' + settings.local_folder);
+	},
+	
 	view:
 	{
 		usage: "notes view <index>",
