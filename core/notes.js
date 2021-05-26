@@ -2,6 +2,35 @@ const fs = require('fs');
 const child_process = require("child_process");
 const path = require('path');
 
+function launchCommand()
+{
+	var command = process.argv[2];
+	if (commands[command])
+	{
+		commands[command].exec(process.argv[3]);
+	}
+	else if (command)
+	{
+		console.log(command + translate("unknown command"));
+	}
+}
+
+function clearTempFile()
+{
+	if (fs.existsSync(tempFileName))
+	{
+		fs.unlinkSync(tempFileName);
+	}
+}
+
+function autoSync()
+{
+	if (settings.auto_sync)
+	{
+		commands.sync.exec();
+	}	
+}
+
 function startCommand()
 {
 	switch (process.platform)
@@ -276,29 +305,8 @@ var lg = loadLg();
 var tempFileName = '.note' + settings.default_temp_extension;
 var filter = "";
 
-var command = process.argv[2];
-
-if (command !== 'sync' && settings.auto_sync)
-{
-	commands.sync.exec();
-}
-
-if (commands[command])
-{
-	commands[command].exec(process.argv[3]);
-}
-else if (command)
-{
-	console.log(command + translate("unknown command"));
-}
-
+autoSync();
+launchCommand();
+clearTempFile();
 home();
-
-if (fs.existsSync(tempFileName))
-{
-	fs.unlinkSync(tempFileName);
-	if (settings.auto_sync)
-	{
-		commands.sync.exec();
-	}
-}
+autoSync();
