@@ -60,12 +60,23 @@ function translate(key)
 	return lg[key][settings.language];
 }
 
-function getFiles()
+function getFiles(folder)
 {
-	return fs.readdirSync(settings.local_folder).filter(function(value, index, arr)
-	{ 
-        return value.indexOf(settings.encrypted_extension) != -1;
-    });
+	folder = folder || settings.local_folder;
+	var files = [];
+	var content = fs.readdirSync(folder, { withFileTypes: true });
+	content.forEach(file => 
+	{
+		if (file.isFile() && path.extname(file.name) === settings.encrypted_extension)
+		{
+			files.push(path.join(folder, file.name).replace(settings.local_folder, ''));
+		}
+		if (file.isDirectory())
+		{
+			files = files.concat(getFiles(path.join(folder, file.name)));
+		}
+	});
+	return files;
 }
 
 function usage()
@@ -282,6 +293,5 @@ home();
 if (fs.existsSync(tempFileName))
 {
 	fs.unlinkSync(tempFileName);
+	if (settings.auto_sync) commands.sync.exec();
 }
-
-if (settings.auto_sync) commands.sync.exec();
