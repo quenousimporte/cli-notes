@@ -23,7 +23,7 @@ function listNotes()
 		{
 			continue;
 		}
-		console.log(i + " " + files[i].replace(settings.encrypted_extension, ""));
+		console.log("[" + i + "] " + files[i].replace(settings.encrypted_extension, ""));
 	}	
 }
 
