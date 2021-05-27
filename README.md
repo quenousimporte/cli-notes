@@ -22,7 +22,7 @@ To access the main menu:
 * Windows: launch `win32\notes`
 * Unix (Linux or Mac): launch `unix/notes`
 
-To add your first note, type `notes add "My first note"`. This will open your editor of choice. When you close the editor (the process must be quit), the note will be encrypted with OpenGPG, using the identity set in the settings file.
+To add your first note, type `notes add "My first note.asc"`. This will open your editor of choice. When you close the editor (the process must be quit), the note will be encrypted with OpenGPG, using the identity set in the settings file.
 
 Your notes are stored in flat .asc files, in the local folder set in the settings file. In the interface they are listed with an index:
 
