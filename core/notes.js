@@ -115,7 +115,10 @@ function translate(key)
 
 function getFiles()
 {
-	return fs.readdirSync(settings.local_folder);
+	return fs.readdirSync(settings.local_folder).filter(function(value)
+		{
+			return fs.statSync(path.join(settings.local_folder, value)).isFile();
+		});
 }
 
 function usage()
