@@ -7,5 +7,5 @@
 	"default_temp_extension": ".md",
 	"encrypted_extension": ".asc",
 	"language": "en",
-	"auto_sync": true
+	"auto_sync": false
 }
