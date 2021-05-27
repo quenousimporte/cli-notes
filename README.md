@@ -7,7 +7,7 @@ This is yet another note-taking app, heavily inspired by [nb](https://xwmx.githu
 * It is cross-platform (I tested it on some tens: Windows 10, Debian 10, MacOS 10.10)
 * You can configure any external editor to write your notes (I tested vim, Sublime Text, Notepad++, MacDown)
 * Your notes can be synchronized with any external tool (WebDAV sync, git...)
-* The dependencies are node.js (with no additional package), and OpenGPG
+* The requirements are node.js, OpenGPG, and pandoc (optional, for markdown preview)
 
 ⚠ While you edit your note, it is written unencrypted in a temporary file on your hard drive. I am no security expert. Please do not use this app if your life, reputation, or whatever you value is at stake!
 
