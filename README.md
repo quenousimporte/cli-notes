@@ -5,7 +5,7 @@ This is yet another note-taking app, heavily inspired by [nb](https://xwmx.githu
 * It uses a very simple CLI
 * Your notes are encrypted with GPG
 * It is cross-platform (I tested it on some tens: Windows 10, Debian 10, MacOS 10.10)
-* You can configure any external editor to write your notes (I tested vim, Sublime Text and Notepad++)
+* You can configure any external editor to write your notes (I tested vim, Sublime Text, Notepad++, MacDown)
 * Your notes can be synchronized with any external tool (WebDAV sync, git...)
 * The dependencies are node.js (with no additional package), and OpenGPG
 
