@@ -2,6 +2,30 @@ const fs = require('fs');
 const child_process = require("child_process");
 const path = require('path');
 
+function loadTemp(input, output)
+{
+	if (path.extname(input) == settings.encrypted_extension)
+	{
+		decrypt(input, output);
+	}
+	else
+	{
+		fs.copyFileSync(input, output);
+	}
+}
+
+function flushTemp(input, output)
+{
+	if (path.extname(output) == settings.encrypted_extension)
+	{
+		encrypt(input, output);
+	}
+	else
+	{
+		fs.copyFileSync(input, output);	
+	}
+}
+
 function launchCommand()
 {
 	var command = process.argv[2];
@@ -52,7 +76,7 @@ function listNotes()
 		{
 			continue;
 		}
-		console.log("[" + i + "] " + files[i].replace(settings.encrypted_extension, ""));
+		console.log("[" + i + "] " + files[i]);
 	}	
 }
 
@@ -80,8 +104,8 @@ function loadLg()
 
 function importFile(file)
 {
-	var newFile = path.join(settings.local_folder, path.basename(file).replace(settings.default_temp_extension, settings.encrypted_extension));
-	encrypt(file, newFile);
+	var newFile = path.join(settings.local_folder, path.basename(file));
+	flushTemp(file, newFile);
 }
 
 function translate(key)
@@ -91,11 +115,7 @@ function translate(key)
 
 function getFiles()
 {
-	return fs.readdirSync(settings.local_folder)
-	.filter(file => 
-	{
-		return path.extname(file) === settings.encrypted_extension;
-	});
+	return fs.readdirSync(settings.local_folder);
 }
 
 function usage()
@@ -138,7 +158,6 @@ function home()
 
 function decrypt(input, output)
 {
-	output = output || tempFileName;
 	execCommand("gpg", settings.gpg_options.concat(["-o", output,"-d", input]));
 }
 
@@ -167,9 +186,9 @@ var commands =
 		exec: function(index)
 		{
 			var fileName = getFileName(index);
-			decrypt(fileName, tempFileName);
+			loadTemp(fileName, tempFileName);
 			editFile(tempFileName);
-			encrypt(tempFileName, fileName);
+			flushTemp(tempFileName, fileName);
 		}
 	},
 	
@@ -180,7 +199,7 @@ var commands =
 		{
 			var fileName = getFileName(index);
 
-			decrypt(fileName, tempFileName);
+			loadTemp(fileName, tempFileName);
 			var data = fs.readFileSync(tempFileName, 'utf8');
 			
 			console.log(fileName + ":");
@@ -190,11 +209,11 @@ var commands =
 
 	add:
 	{
-		usage: "notes add <title>",
+		usage: "notes add <fileName>",
 		exec: function(arg)
 		{
 			editFile(tempFileName);
-			encrypt(tempFileName, path.join(settings.local_folder, arg + ".asc"));
+			flushTemp(tempFileName, path.join(settings.local_folder, arg));
 		}
 	},
 
@@ -255,8 +274,11 @@ var commands =
 			for (var index in files)
 			{
 				var fileName = path.join(settings.local_folder, files[index]);
-				var outputFileName = path.join(dest, files[index].replace(settings.encrypted_extension, settings.default_temp_extension));
-				decrypt(fileName, outputFileName);
+				if (fs.lstatSync(fileName).isFile())
+				{
+					var outputFileName = path.join(dest, files[index]);
+					loadTemp(fileName, outputFileName);
+				}
 			}
 		}
 	},
@@ -276,7 +298,7 @@ var commands =
 		{
 			var htmlFileName = tempFileName + '.html';
 			var fileName = getFileName(index);
-			decrypt(fileName, tempFileName);
+			loadTemp(fileName, tempFileName);
 			execCommand('pandoc', [tempFileName, '-o', htmlFileName]);
 			
 			child_process.exec(startCommand() + ' ' + htmlFileName);
