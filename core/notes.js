@@ -92,14 +92,19 @@ function loadJson(path)
 	return JSON.parse(data);	
 }
 
+function getSystemFilePath(fileName)
+{
+	return path.join(path.dirname(process.argv[1]), fileName);
+}
+
 function loadSettings()
 {
-  return loadJson('../core/settings.json');
+  return loadJson(getSystemFilePath('settings.json'));
 }
 
 function loadLg()
 {
-	return loadJson('../core/lg.json');
+	return loadJson(getSystemFilePath('lg.json'));
 }
 
 function importFile(file)
@@ -234,7 +239,7 @@ var commands =
 		usage: "notes settings",
 		exec: function()
 		{
-			editFile('../core/settings.json');
+			editFile(getSystemFilePath('settings.json'));
 			settings = loadSettings();
 		}
 	},
