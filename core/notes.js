@@ -216,7 +216,7 @@ var commands =
 		exec: function(arg)
 		{
 			editFile(tempFileName);
-			flushTemp(tempFileName, path.join(settings.local_folder, arg));
+			flushTemp(tempFileName, path.join(settings.local_folder, arg + settings.encrypted_extension));
 		}
 	},
 
