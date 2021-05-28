@@ -220,8 +220,14 @@ var commands =
 		usage: "notes add <fileName>",
 		exec: function(arg)
 		{
+			arg = arg || (new Date).toISOString().substr(0,10);
+			var fileName = path.join(settings.local_folder, arg + settings.encrypted_extension);
+			if (fs.existsSync(fileName))
+			{
+				loadTemp(fileName, tempFileName);
+			}
 			editFile(tempFileName);
-			flushTemp(tempFileName, path.join(settings.local_folder, arg + settings.encrypted_extension));
+			flushTemp(tempFileName, fileName);
 		}
 	},
 
