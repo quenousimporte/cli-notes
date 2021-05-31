@@ -47,14 +47,6 @@ function clearTempFile()
 	}
 }
 
-function autoSync()
-{
-	if (settings.auto_sync)
-	{
-		commands.sync.exec();
-	}	
-}
-
 function startCommand()
 {
 	switch (process.platform)
@@ -297,14 +289,6 @@ var commands =
 		}
 	},
 	
-	explore:
-	{
-		exec: function()
-		{
-			child_process.exec(startCommand() + ' ' + settings.local_folder);
-		}
-	},
-	
 	view:
 	{
 		usage: "notes view <index>",
@@ -323,6 +307,24 @@ var commands =
 				fs.unlinkSync(htmlFileName);
 			}, 5000);
 		}
+	},
+	
+	explore:
+	{
+		exec: function()
+		{
+			child_process.exec(startCommand() + ' ' + settings.local_folder);
+		}
+	},
+	
+	project:
+	{
+		exec: function()
+		{
+			commands.sync.exec();
+			execCommand(settings.editor, [settings.local_folder]);
+			commands.sync.exec();			
+		}
 	}
 }
 
@@ -331,8 +333,6 @@ var lg = loadLg();
 var tempFileName = '.note' + settings.default_temp_extension;
 var filter = "";
 
-autoSync();
 launchCommand();
 clearTempFile();
 home();
-autoSync();
