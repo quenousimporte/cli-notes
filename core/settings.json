@@ -6,6 +6,5 @@
 	"gpg_options": ["-r", "me@domain.net", "--yes", "-a"],
 	"default_temp_extension": ".md",
 	"encrypted_extension": ".asc",
-	"language": "en",
-	"auto_sync": false
+	"language": "en"
 }
