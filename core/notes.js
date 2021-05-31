@@ -26,19 +26,6 @@ function flushTemp(input, output)
 	}
 }
 
-function launchCommand()
-{
-	var command = process.argv[2];
-	if (commands[command])
-	{
-		commands[command].exec(process.argv[3]);
-	}
-	else if (command)
-	{
-		console.log(command + translate("unknown command"));
-	}
-}
-
 function clearTempFile()
 {
 	if (fs.existsSync(tempFileName))
@@ -112,10 +99,18 @@ function translate(key)
 
 function getFiles()
 {
-	return fs.readdirSync(settings.local_folder).filter(function(value)
+	var files = fs.readdirSync(settings.local_folder).filter(function(value)
 		{
-			return fs.statSync(path.join(settings.local_folder, value)).isFile();
+			return folders ? 
+			fs.statSync(path.join(settings.local_folder, value)).isDirectory() :
+			fs.statSync(path.join(settings.local_folder, value)).isFile();
 		});
+
+	if (folders)
+	{
+		files.unshift('..');
+	}
+	return files;
 }
 
 function usage()
@@ -325,14 +320,41 @@ var commands =
 			execCommand(settings.editor, [settings.local_folder]);
 			commands.sync.exec();			
 		}
+	},
+
+	change:
+	{
+		usage: "notes change [<index>]",
+		exec: function(arg)
+		{
+			folders = true;
+			if (arg)
+			{
+				var files = getFiles();
+				var newPath = path.normalize(path.join(settings.local_folder, files[arg]));
+				settings.local_folder = newPath;
+				fs.writeFileSync(getSystemFilePath('settings.json'), JSON.stringify(settings, null, " "));
+				folders = false;
+			}
+		}
 	}
 }
 
+var folders = false;
 var settings = loadSettings();
 var lg = loadLg();
 var tempFileName = '.note' + settings.default_temp_extension;
 var filter = "";
 
-launchCommand();
+var command = process.argv[2];
+if (commands[command])
+{
+	commands[command].exec(process.argv[3]);
+}
+else if (command)
+{
+	console.log(command + translate("unknown command"));
+}
+
 clearTempFile();
 home();
