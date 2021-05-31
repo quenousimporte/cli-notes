@@ -204,7 +204,7 @@ var commands =
 
 	add:
 	{
-		usage: "notes add <fileName>",
+		usage: "notes add [<title>]",
 		exec: function(arg)
 		{
 			arg = arg || (new Date).toISOString().substr(0,10);
@@ -314,6 +314,7 @@ var commands =
 	
 	project:
 	{
+		usage: "notes project",
 		exec: function()
 		{
 			commands.sync.exec();
