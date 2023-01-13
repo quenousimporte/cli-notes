@@ -1,4 +1,4 @@
-# notes
+# cli-notes
 
 This is yet another note-taking app, heavily inspired by [nb](https://xwmx.github.io/nb/).
 
